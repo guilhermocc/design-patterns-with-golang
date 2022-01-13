@@ -5,7 +5,7 @@ import "fmt"
 //Factory Method is a creational design pattern that provides an interface for creating objects in a superclass,
 //but allows subclasses to alter the type of objects that will be created.
 
-// In this example, we are creating a factory method that creates a new objects that implement the Conveyor interface.
+// In this example, we are creating a factory method called GetConveyance, that creates a new objects that implement the Conveyor interface.
 
 // Conveyor is the Product, the product is the one that declares the interface, which is common to all objects that
 // can be produced by the creator and its subclasses.

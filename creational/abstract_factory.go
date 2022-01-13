@@ -3,65 +3,71 @@ package creational
 // Abstract Factory is a creational design pattern that lets you produce families of related objects without
 // specifying their concrete classes.
 
+// In this example we have an abstract factory interface SportsFactory, then we define a function getSportsFactory that
+// returns the concrete factory of the given family of related objects.
+
 import "fmt"
 
+// SportsFactory is the interface of the Abstract Factory.
 type SportsFactory interface {
 	makeShoe() Shoe
-	makeShirt() Shirt
+	makeShirt() Clothing
 }
 
 func getSportsFactory(brand string) (SportsFactory, error) {
-	if brand == "adidas" {
-		return &adidas{}, nil
+	switch brand {
+	case "adidas":
+		return &adidasFactory{}, nil
+	case "nike":
+		return &nikeFactory{}, nil
+	default:
+		return nil, fmt.Errorf("unknown brand %s", brand)
 	}
-
-	if brand == "nike" {
-		return &nike{}, nil
-	}
-
-	return nil, fmt.Errorf("wrong brand type passed")
 }
 
-type adidas struct{}
+// adidasFactory is the Concrete Factory, it implements the abstract factory interface.
+type adidasFactory struct{}
 
-func (a *adidas) makeShoe() Shoe {
+func (a *adidasFactory) makeShoe() Shoe {
 	return &adidasShoe{
-		shoe: shoe{
-			logo: "adidas",
+		sneaker: sneaker{
+			logo: "adidasFactory",
 			size: 14,
 		},
 	}
 }
 
-func (a *adidas) makeShirt() Shirt {
+func (a *adidasFactory) makeShirt() Clothing {
 	return &adidasShirt{
 		shirt: shirt{
-			logo: "adidas",
+			logo: "adidasFactory",
 			size: 14,
 		},
 	}
 }
 
-type nike struct{}
+// nikeFactory is another Concrete Factory, it implements the abstract factory interface.
+type nikeFactory struct{}
 
-func (n *nike) makeShoe() Shoe {
+func (n *nikeFactory) makeShoe() Shoe {
 	return &nikeShoe{
-		shoe: shoe{
-			logo: "nike",
+		sneaker: sneaker{
+			logo: "nikeFactory",
 			size: 14,
 		},
 	}
 }
 
-func (n *nike) makeShirt() Shirt {
+func (n *nikeFactory) makeShirt() Clothing {
 	return &nikeShirt{
 		shirt: shirt{
-			logo: "nike",
+			logo: "nikeFactory",
 			size: 14,
 		},
 	}
 }
 
+// Shoe is the interface of the first product.
 type Shoe interface {
 	setLogo(logo string)
 	setSize(size int)
@@ -69,36 +75,37 @@ type Shoe interface {
 	getSize() int
 }
 
-type shoe struct {
+type sneaker struct {
 	logo string
 	size int
 }
 
-func (s *shoe) setLogo(logo string) {
+func (s *sneaker) setLogo(logo string) {
 	s.logo = logo
 }
 
-func (s *shoe) getLogo() string {
+func (s *sneaker) getLogo() string {
 	return s.logo
 }
 
-func (s *shoe) setSize(size int) {
+func (s *sneaker) setSize(size int) {
 	s.size = size
 }
 
-func (s *shoe) getSize() int {
+func (s *sneaker) getSize() int {
 	return s.size
 }
 
 type adidasShoe struct {
-	shoe
+	sneaker
 }
 
 type nikeShoe struct {
-	shoe
+	sneaker
 }
 
-type Shirt interface {
+// Clothing is the interface of the second product.
+type Clothing interface {
 	setLogo(logo string)
 	setSize(size int)
 	getLogo() string
